@@ -20,8 +20,8 @@ public class GameButton extends GameObject{
 
 	@Override
 	public void draw(Graphics2D g) {
-		double scalex = 15;
-		double scaley = 5;
+		double scalex = 2;
+		double scaley = 2;
 		if (state == 3) state = 1;
 		if(state == 0)
 			g.drawImage(strong, (int) (this.x * scalex), (int) (this.y * scaley), (int) (width*scalex), (int) (height * scaley), null);

@@ -32,7 +32,6 @@ public class Keys extends Core implements KeyListener, MouseInputListener{
 		//----------------  Inicjacja Ekranu --------------
 		Window w = s.getFullScreenWindow();
 		w.setFocusTraversalKeysEnabled(false);
-		
 
 		//----------------  Ustawienie niwidocznego kursora --------------
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -40,7 +39,7 @@ public class Keys extends Core implements KeyListener, MouseInputListener{
 		Point hotSpot = new Point(0,0);
 		Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, hotSpot, "InvisibleCursor");        
 		w.setCursor(invisibleCursor);
-		im = new ImageIcon("/afs/ericpol.int/home/m/l/mlak/home/face.png").getImage();
+		im = new ImageIcon(getClass().getResource("/images/cursor.png").getFile()).getImage();
 		loader = new Loader(this);
 		
 		//----------------  Inicjacja Eventów --------------
