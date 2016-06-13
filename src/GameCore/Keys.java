@@ -1,3 +1,4 @@
+package GameCore;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -16,16 +17,25 @@ import javax.swing.ImageIcon;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.basic.BasicTabbedPaneUI.MouseHandler;
 
+import Game.Game;
+import Scenes.Loader;
+
 import java.awt.Toolkit;
 
 public class Keys extends Core implements KeyListener, MouseInputListener{
-	public static void main(String args[]){
-		new Keys().run();
-	}
 	
 	private Image im;
 	private int x,y,state;
-	private gameView loader;
+	private GameView currentScene;
+	public Game game;
+	
+	public Keys(Game g) {
+		game = g;
+	}
+	
+	public void setCurrentScene(GameView gv){
+		currentScene = gv;
+	}
 	
 	public void init(){
 		super.init();
@@ -40,7 +50,6 @@ public class Keys extends Core implements KeyListener, MouseInputListener{
 		Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, hotSpot, "InvisibleCursor");        
 		w.setCursor(invisibleCursor);
 		im = new ImageIcon(getClass().getResource("/images/cursor.png").getFile()).getImage();
-		loader = new Loader(this);
 		
 		//----------------  Inicjacja Eventów --------------
 		w.addKeyListener(this);
@@ -77,8 +86,8 @@ public class Keys extends Core implements KeyListener, MouseInputListener{
 		Window w = s.getFullScreenWindow();
 		g.setColor(w.getBackground());
 		g.fillRect(0, 0, s.getWidth(), s.getHeight());
-		loader.onHover(this.x, this.y, state); 
-		loader.draw(g);
+		currentScene.onHover(this.x, this.y, state); 
+		currentScene.draw(g);
 		g.drawImage(im, this.x, this.y, im.getWidth(null), im.getHeight(null), null);
 		g.setColor(new Color(255,255,255));
 	}
@@ -116,4 +125,6 @@ public class Keys extends Core implements KeyListener, MouseInputListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
+	
 }

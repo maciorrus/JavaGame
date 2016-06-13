@@ -1,3 +1,4 @@
+package GameCore;
 import java.awt.Color;
 import java.awt.DisplayMode;
 import java.awt.Font;
@@ -7,7 +8,7 @@ import java.awt.Window;
 
 public abstract class Core {
 
-	private static DisplayMode modes[] = {
+	public static DisplayMode modes[] = {
 		new DisplayMode(1366, 768, 32, 0),
 		new DisplayMode(1366, 768, 24, 0),
 		new DisplayMode(1366, 768, 16, 0)

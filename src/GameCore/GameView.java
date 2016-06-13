@@ -1,3 +1,4 @@
+package GameCore;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.List;
@@ -6,15 +7,15 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 
-public abstract class gameView extends GameObject{
+public abstract class GameView extends GameObject{
 
 
-	private Image background;
-	protected ArrayList<GameObject> objectList;
+	protected Image background;
+	public ArrayList<GameObject> objectList;
 	public Core application;
 	
-	public gameView(String url, Core app){
-		super(0,0,1920,1080);
+	public GameView(String s,String url, Core app){
+		super(s,0,0,Core.modes[0].getWidth(),Core.modes[0].getHeight());
 		application = app;
 		this.background = new ImageIcon(url).getImage();
 		objectList = new ArrayList<GameObject>();
@@ -23,11 +24,12 @@ public abstract class gameView extends GameObject{
 	@Override
 	public void draw(Graphics2D g) {
 		
-		g.drawImage(this.background, 0 , 0 , 1920, 1080, null);
+		g.drawImage(this.background, 0 , 0 , Core.modes[0].getWidth(), Core.modes[0].getHeight(), null);
 		int counter = 0;
 		while(counter<objectList.size()){
 			objectList.get(counter).draw(g);
 			counter++;
+			if(objectList.get(counter).onHover(xpos, ypos, buttons))
 		}
 		
 	}
