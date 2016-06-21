@@ -2,6 +2,7 @@ package game;
 
 import java.awt.event.KeyEvent;
 
+import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 
 public abstract class GameObject {
@@ -9,7 +10,7 @@ public abstract class GameObject {
 	private int x, y, width, height;
 	protected boolean hover, focused;
 
-	public abstract void draw(GLAutoDrawable drawable);
+	public abstract void draw(final GL2 gl);
 
 	public abstract void onhover();
 

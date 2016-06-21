@@ -23,8 +23,7 @@ public class GameInputText extends GameObject {
 	}
 
 	@Override
-	public void draw(GLAutoDrawable drawable) {
-		final GL2 gl = drawable.getGL().getGL2();
+	public void draw(final GL2 gl) {
 		float col;
 		if(focused) col = 0f;
 		else col = 1f;

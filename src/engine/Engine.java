@@ -40,14 +40,11 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	private static final long serialVersionUID = 8819738880472328756L;
 	final private int width = 800;
 	final private int height = 600;
-	private int texture;
-	private Set<GameObject> gameObjects;
-	private int mouseX, mouseY;
 	private String mouseState;
 	private Set<Integer> keyCode;
-	Texture t;
 	char lastPressed;
-	GameObject focus;
+	private int mouseX, mouseY;
+	private Scene scene;
 
 	public Engine() {
 		super("Minimal OpenGL");
@@ -73,11 +70,8 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		canvas.addKeyListener(this);
 		mouseState = "OFF";
 		keyCode = new HashSet<Integer>();
-		gameObjects = new HashSet<GameObject>();
-		gameObjects.add(new TestButton());
-		gameObjects.add(new GameInputText(110,300,100,30));
 		lastPressed = ' ';
-		focus = null;
+		scene = new MainScene(keyCode);
 	}
 
 	@Override
@@ -94,14 +88,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
-		try {
-	         t = TextureIO.newTexture(this.getClass().getResource("pobrane.jpg"), false, ".jpg"); 
-	         texture= t.getTextureObject(gl);
-		} catch (GLException | IOException e) {
-			e.printStackTrace();
-		}
-
+		scene.init(drawable);
 	}
 
 	@Override
@@ -119,31 +106,20 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	public void render(GLAutoDrawable drawable) {
         drawable.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		final GL2 gl = drawable.getGL().getGL2();
-        gl.glEnable(GL2.GL_TEXTURE_2D);
-        t.enable(gl);
-        t.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glTexCoord2f(0.5f, 0.5f);gl.glVertex2d(0.0, 0.0);
-		gl.glTexCoord2f(0.5f, 1.0f);gl.glVertex2d(0.0, 0.9);
-		gl.glTexCoord2f(1.0f, 1.0f);gl.glVertex2d(0.9, 0.9);
-		gl.glTexCoord2f(1.0f, 0.5f);gl.glVertex2d(0.9, 0.0);
-        gl.glEnd();
-        gl.glDisable(GL2.GL_TEXTURE_2D);
         
-		for (GameObject o:gameObjects) o.draw(drawable);
 		TextRenderer textRenderer = new TextRenderer(new Font("Verdana", Font.CENTER_BASELINE, 16));
 		textRenderer.setColor(Color.WHITE);
 		textRenderer.setSmoothing(true);
 		textRenderer.beginRendering(800,600);
 		textRenderer.draw(mouseX + ":" + (600 - mouseY), 50, 50);
 		textRenderer.draw(mouseState, 50, 30);
-		String keyList = "";
 		int c = 1;
 		for(int i:keyCode) {
 			textRenderer.draw(i + " " + String.valueOf(Character.toChars(i)), 50*(c++), 10);
 		}
 		textRenderer.draw("" + lastPressed, 50, 70);
 		textRenderer.endRendering();
+		scene.render(gl);
 	}
 	
 	public static float relOX(int x){
@@ -162,26 +138,12 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
-		for (GameObject o:gameObjects){
-			if(o.hover(mouseX, 600-mouseY)) break;
-		}
+		if(scene != null) scene.mouseMoved(e);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		for (GameObject o:gameObjects){
-			if(o.hover(mouseX, 600-mouseY)){
-				if (o.focusable()){
-					if(focus!=null) focus.offFocus();
-					focus = o;
-					focus.onFocus();
-				}
-				o.onClick();
-				return;
-			}
-		}
-		if(focus!=null) focus.offFocus();
-		focus = null;
+		scene.mouseClicked(arg0);
 	}
 
 	@Override
@@ -220,8 +182,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	@Override
 	public void keyTyped(KeyEvent e) {
 		lastPressed = e.getKeyChar();
-		if(focus != null)
-			focus.keyTyped(e);
+		scene.keyTyped(e);
 	}
 
 }

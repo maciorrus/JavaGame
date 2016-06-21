@@ -27,8 +27,7 @@ public class TestButton extends GameObject {
 	}
 
 	@Override
-	public void draw(GLAutoDrawable drawable) {
-		final GL2 gl = drawable.getGL().getGL2();
+	public void draw(final GL2 gl) {
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(r,g,b);
 		gl.glVertex2f(Engine.relOX(this.getX()),Engine.relOY(this.getY()));
@@ -49,6 +48,7 @@ public class TestButton extends GameObject {
 
 	@Override
 	public void onClick() {
+		System.out.println("Button CLICKED!");
 	}
 
 	@Override
