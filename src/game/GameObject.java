@@ -9,6 +9,7 @@ public abstract class GameObject {
 
 	private int x, y, width, height;
 	protected boolean hover, focused;
+	protected boolean visible;
 
 	public abstract void draw(final GL2 gl);
 
@@ -31,6 +32,7 @@ public abstract class GameObject {
 	}
 
 	public boolean hover(int xx, int yy) {
+		if(!visible) return false;
 		if (x < xx && x + width > xx && y < yy && y + height > yy) {
 			if (hover == false) {
 				hover = true;

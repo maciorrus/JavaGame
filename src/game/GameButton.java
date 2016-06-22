@@ -11,23 +11,33 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 
 import engine.Engine;
 
-public class TestButton extends GameObject {
+public abstract class GameButton extends GameObject {
 
 	private String name;
 	private TextRenderer textRenderer;
 	private float r,g,b;
 	
-	public TestButton() {
-		super(250,100,110,50);
+	public GameButton(int x, int y, int xx, int yy, String n) {
+		super(x,y,xx,yy);
 		r = 0f;
 		g = 1f;
 		b = 0f;
-		name = "START";
+		name = n;
 		textRenderer = new TextRenderer(new Font("Verdana", Font.CENTER_BASELINE, 16));
+		visible = false;
+	}
+	
+	public void hide(){
+		visible = false;
+	}
+	
+	public void show(){
+		visible = true;
 	}
 
 	@Override
 	public void draw(final GL2 gl) {
+		if(!visible) return;
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(r,g,b);
 		gl.glVertex2f(Engine.relOX(this.getX()),Engine.relOY(this.getY()));
@@ -46,10 +56,7 @@ public class TestButton extends GameObject {
 		textRenderer.endRendering();
 	}
 
-	@Override
-	public void onClick() {
-		System.out.println("Button CLICKED!");
-	}
+	public abstract void onClick();
 
 	@Override
 	public void onhover() {

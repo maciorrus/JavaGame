@@ -14,7 +14,9 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 import game.GameInputText;
 import game.GameObject;
-import game.TestButton;
+import mainScene.ExitButton;
+import mainScene.StartButton;
+import game.GameButton;
 
 public class MainScene implements Scene {
 	Texture t;
@@ -22,13 +24,16 @@ public class MainScene implements Scene {
 	GameObject focus;
 	private int mouseX, mouseY;
 	private Set<Integer> keyCodes;
+	private Engine e;
 
-	public MainScene(Set<Integer> keyCode) {
+	public MainScene(Set<Integer> keyCode, Engine engine) {
 		keyCodes = keyCode;
 		gameObjects = new HashSet<GameObject>();
-		gameObjects.add(new TestButton());
-		gameObjects.add(new GameInputText(110, 300, 100, 30));
+		ExitButton ex = new ExitButton();
+		gameObjects.add(new StartButton(ex));
+		gameObjects.add(ex);
 		focus = null;
+		e = engine;
 	}
 
 	@Override

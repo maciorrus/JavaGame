@@ -11,7 +11,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -33,7 +35,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 import game.GameInputText;
 import game.GameObject;
-import game.TestButton;
+import game.GameButton;
 
 public class Engine extends JFrame implements GLEventListener, MouseMotionListener, MouseListener, KeyListener {
 
@@ -45,6 +47,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	char lastPressed;
 	private int mouseX, mouseY;
 	private Scene scene;
+	public List<Scene> sceneList;
 
 	public Engine() {
 		super("Minimal OpenGL");
@@ -52,9 +55,6 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		GLCapabilities capabilities = new GLCapabilities(profile);
 		GLCanvas canvas = new GLCanvas(capabilities);
 		canvas.addGLEventListener(this);
-		
-		FPSAnimator anim = new FPSAnimator(canvas,60);
-		anim.start();
 
 		this.setName("Minimal OpenGL");
 		this.getContentPane().add(canvas);
@@ -71,7 +71,12 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		mouseState = "OFF";
 		keyCode = new HashSet<Integer>();
 		lastPressed = ' ';
-		scene = new MainScene(keyCode);
+		scene = new MainScene(keyCode, this);
+		sceneList = new ArrayList<Scene>();
+		sceneList.add(scene);
+		
+		FPSAnimator anim = new FPSAnimator(canvas,60);
+		anim.start();
 	}
 
 	@Override
