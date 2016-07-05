@@ -1,4 +1,4 @@
-package engine;
+package mainScene;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -12,10 +12,10 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+import engine.Engine;
+import engine.Scene;
 import game.GameInputText;
 import game.GameObject;
-import mainScene.ExitButton;
-import mainScene.StartButton;
 import game.GameButton;
 
 public class MainScene implements Scene {
@@ -30,7 +30,7 @@ public class MainScene implements Scene {
 		keyCodes = keyCode;
 		gameObjects = new HashSet<GameObject>();
 		ExitButton ex = new ExitButton();
-		gameObjects.add(new StartButton(ex));
+		gameObjects.add(new StartButton(ex,engine));
 		gameObjects.add(ex);
 		focus = null;
 		e = engine;

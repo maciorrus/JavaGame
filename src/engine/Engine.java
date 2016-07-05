@@ -33,8 +33,10 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+import PlayScene.PlayScene;
 import game.GameInputText;
 import game.GameObject;
+import mainScene.MainScene;
 import game.GameButton;
 
 public class Engine extends JFrame implements GLEventListener, MouseMotionListener, MouseListener, KeyListener {
@@ -43,10 +45,10 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	final private int width = 800;
 	final private int height = 600;
 	private String mouseState;
-	private Set<Integer> keyCode;
+	public Set<Integer> keyCode;
 	char lastPressed;
 	private int mouseX, mouseY;
-	private Scene scene;
+	public Scene scene;
 	public List<Scene> sceneList;
 
 	public Engine() {
@@ -74,6 +76,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		scene = new MainScene(keyCode, this);
 		sceneList = new ArrayList<Scene>();
 		sceneList.add(scene);
+		sceneList.add(new PlayScene(keyCode, this));
 		
 		FPSAnimator anim = new FPSAnimator(canvas,60);
 		anim.start();
@@ -93,25 +96,27 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
+		while(scene == null){}
 		scene.init(drawable);
 	}
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void play() {
 	}
 
 	public void update() {
+		scene.update();
 	}
 
 	public void render(GLAutoDrawable drawable) {
         drawable.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		final GL2 gl = drawable.getGL().getGL2();
-        
+
+		scene.render(gl);
 		TextRenderer textRenderer = new TextRenderer(new Font("Verdana", Font.CENTER_BASELINE, 16));
 		textRenderer.setColor(Color.WHITE);
 		textRenderer.setSmoothing(true);
@@ -124,7 +129,6 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		}
 		textRenderer.draw("" + lastPressed, 50, 70);
 		textRenderer.endRendering();
-		scene.render(gl);
 	}
 	
 	public static float relOX(int x){
