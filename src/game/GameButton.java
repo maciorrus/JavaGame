@@ -38,14 +38,7 @@ public abstract class GameButton extends GameObject {
 	@Override
 	public void draw(final GL2 gl) {
 		if(!visible) return;
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(r,g,b);
-		gl.glVertex2f(Engine.relOX(this.getX()),Engine.relOY(this.getY()));
-		gl.glVertex2f(Engine.relOX(this.getX()),Engine.relOY(this.getY() + this.getH()));
-		gl.glVertex2f(Engine.relOX(this.getX() + this.getW()),Engine.relOY(this.getY() + this.getH()));
-		gl.glVertex2f(Engine.relOX(this.getX() + this.getW()),Engine.relOY(this.getY()));
-		gl.glEnd();
-
+		Engine.drawRectangle(gl, this.getX(), this.getY(), this.getW(), this.getH(), r, g, b);
 
 		textRenderer.setColor(Color.BLACK);
 		textRenderer.setSmoothing(true);

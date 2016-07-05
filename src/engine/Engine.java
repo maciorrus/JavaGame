@@ -106,6 +106,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	}
 
 	public void update() {
+		scene.update();
 	}
 
 	public void render(GLAutoDrawable drawable) {
@@ -188,6 +189,16 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	public void keyTyped(KeyEvent e) {
 		lastPressed = e.getKeyChar();
 		scene.keyTyped(e);
+	}
+	
+	public static void drawRectangle(GL2 gl,int x, int y, int xx, int yy, float r, float g, float b){
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3f(r,g,b);
+		gl.glVertex2f(relOX(x),relOY(y));
+		gl.glVertex2f(relOX(x),relOY(y + yy));
+		gl.glVertex2f(relOX(x + xx),relOY(y + yy));
+		gl.glVertex2f(relOX(x + xx),relOY(y));
+		gl.glEnd();
 	}
 
 }
