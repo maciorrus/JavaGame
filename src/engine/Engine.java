@@ -48,6 +48,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 	private int mouseX, mouseY;
 	private Scene scene;
 	public List<Scene> sceneList;
+	private static TextRenderer defaultTextRenderer;
 
 	public Engine() {
 		super("Minimal OpenGL");
@@ -55,6 +56,7 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		GLCapabilities capabilities = new GLCapabilities(profile);
 		GLCanvas canvas = new GLCanvas(capabilities);
 		canvas.addGLEventListener(this);
+		defaultTextRenderer = new TextRenderer(new Font("Verdana", Font.CENTER_BASELINE, 16));
 
 		this.setName("Minimal OpenGL");
 		this.getContentPane().add(canvas);
@@ -199,6 +201,17 @@ public class Engine extends JFrame implements GLEventListener, MouseMotionListen
 		gl.glVertex2f(relOX(x + xx),relOY(y + yy));
 		gl.glVertex2f(relOX(x + xx),relOY(y));
 		gl.glEnd();
+	}
+	
+	public static void outText(GL2 gl,int x, int y, Color c, String s){
+	defaultTextRenderer.setColor(Color.BLACK);
+	defaultTextRenderer.setSmoothing(true);
+	defaultTextRenderer.beginRendering(800,600);
+	int textWidth = (int) defaultTextRenderer.getBounds(s.replace(" ","_")).getWidth();
+	int textHeight = (int) defaultTextRenderer.getBounds(s).getHeight();
+	defaultTextRenderer.draw(s, x - textWidth/2, y - textHeight/2);
+	defaultTextRenderer.endRendering();
+
 	}
 
 }

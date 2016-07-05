@@ -39,14 +39,7 @@ public abstract class GameButton extends GameObject {
 	public void draw(final GL2 gl) {
 		if(!visible) return;
 		Engine.drawRectangle(gl, this.getX(), this.getY(), this.getW(), this.getH(), r, g, b);
-
-		textRenderer.setColor(Color.BLACK);
-		textRenderer.setSmoothing(true);
-		textRenderer.beginRendering(800,600);
-		int textWidth = (int) textRenderer.getBounds(name.replace(" ","_")).getWidth();
-		int textHeight = (int) textRenderer.getBounds(name).getHeight();
-		textRenderer.draw(name, this.getX()+this.getW()/2-textWidth/2, this.getY()+this.getH()/2-textHeight/2);
-		textRenderer.endRendering();
+		Engine.outText(gl, this.getX() + this.getW()/2, this.getY()+this.getH()/2, Color.BLACK, this.name);
 	}
 
 	public abstract void onClick();
